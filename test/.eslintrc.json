@@ -1,0 +1,44 @@
+{
+  "extends": ["eslint:recommended", "google"],
+  "parserOptions": {
+    "ecmaVersion": 6
+  },
+  "env": {
+    "browser": true,
+    "es6": true,
+    "mocha": true
+  },
+  "plugins": [
+    "html",
+    "json"
+  ],
+  "rules": {
+    "brace-style": "off",
+    "new-cap": ["error", { "capIsNewExceptions": ["Polymer"] }],
+    "no-var": "off",
+    "require-jsdoc": "off",
+    "max-len": ["warn", {
+      "ignoreTemplateLiterals": true,
+      "ignoreTrailingComments": true,
+      "ignoreUrls": true
+      }]
+  },
+  "globals": {
+    "Polymer": true,
+    "MockInteractions": true,
+    "chai": true,
+    "sinon": true,
+    "flush": true,
+    "expect": true,
+    "assert": false,
+    "fixture": false,
+    "assertEvent": true,
+    "assertNoEvent": true,
+    "WCT": false,
+    "replace": true,
+    "stub": true,
+    "setTimeOut": true,
+    "EVE": true,
+    "BP": true
+  }
+}

@@ -1,0 +1,32 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../fire-behavior.html">
+
+<dom-module id="x-fire-listener">
+  <template>
+    <x-fire></x-fire>
+  </template>
+  <script>
+    Polymer({
+      is: 'x-fire',
+      behaviors: [
+        BP.FireBehavior,
+      ],
+    });
+
+    Polymer({
+      is: 'x-fire-listener',
+      properties: {
+        eventDetail: {
+          type: Object,
+        },
+      },
+      listeners: {'custom': 'handler'},
+      handler: function(e) {
+        this.eventDetail = e.detail;
+        this.eventBubbles = e.bubbles;
+        this.eventComposed = e.composed;
+        this.eventCancelable = e.cancelable;
+      },
+    });
+  </script>
+</dom-module>

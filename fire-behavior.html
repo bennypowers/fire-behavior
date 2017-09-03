@@ -1,0 +1,32 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<script>
+  // define namespace
+  /* global BP */
+  window.BP = window.BP || {};
+
+  /**
+   * Behavior which provides a version of deprecated Polymer 1.* fire method
+   *
+   * @polymerBehavior
+   */
+  BP.FireBehavior = {
+    fire: this.fire || function(type, detail, options) {
+      options = options || {};
+      const node = options.node || this;
+      detail = detail === null || detail === undefined ? {} : detail;
+      const bubbles = options.bubbles === undefined ? true : options.bubbles;
+      const composed = options.composed === undefined ? true : options.composed;
+      const cancelable = Boolean(options.cancelable);
+      let event = new Event(type, {
+        bubbles: Boolean(bubbles),
+        composed: Boolean(composed),
+        cancelable: cancelable,
+      });
+          event.detail = detail;
+          node.dispatchEvent(event);
+      return event;
+    },
+
+  };
+</script>

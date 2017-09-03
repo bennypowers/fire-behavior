@@ -1,0 +1,7 @@
+.DS_Store
+.vscode/
+bower_components/
+build/
+errorShots/
+node_modules/
+package-lock.json

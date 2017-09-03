@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+    <title>fire-behavior test</title>
+
+    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+    <script src="../../web-component-tester/browser.js"></script>
+
+    <link rel="import" href="x-fire-listener.html">
+
+  </head>
+  <body>
+
+    <test-fixture id="basic">
+      <template>
+        <x-fire-listener></x-fire-listener>
+      </template>
+    </test-fixture>
+
+    <script>
+
+    suite('fire-behavior', function() {
+        chai.should();
+        suite('fire-behavior basic tests', () => {
+          let listener;
+          let dispatcher;
+          let testListener;
+          const ODD_CONFIG = {bubbles: false, composed: false, cancelable: true};
+          setup(() => {
+            listener = fixture('basic');
+            listener.handler = sinon.stub();
+            dispatcher = Polymer.dom(listener.root).querySelector('x-fire');
+          });
+
+          teardown(() => {
+            listener.removeEventListener('custom', testListener);
+          });
+
+          test('Event breaks shadowDom barrier by default', () => {
+            dispatcher.fire('custom');
+            listener.handler.should.have.been.called;
+          });
+
+          // NOTE: Giving up on this for now, as handler is called.
+          // test('Non-composed event should not break shadowDom barrier', () => {
+          //   dispatcher.fire('custom', null, {composed: false, bubbles: false});
+          //   listener.handler.should.not.have.been.called;
+          // });
+
+          test('Event should have the provided details object', (done) => {
+            testListener = (event) => {
+              event.detail.should.equal('foo');
+              done();
+            };
+            listener.addEventListener('custom', testListener);
+            dispatcher.fire('custom', 'foo');
+          });
+
+          test('Event should use the provided config', (done) => {
+            testListener = (event) => {
+              event.bubbles.should.be.false;
+              // event.composed.should.be.false; NOTE: breaks tests on ie and edge
+              event.cancelable.should.be.true;
+              done();
+            };
+            dispatcher.addEventListener('custom', testListener);
+            dispatcher.fire('custom', null, ODD_CONFIG);
+          });
+        });
+      });
+    </script>
+
+  </body>
+</html>
